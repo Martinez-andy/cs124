@@ -12,15 +12,13 @@ long long matrixFib(int n);
 
 int main() {
     int fib;
-    printf("Fib Number: \n");
+    printf("Fib Number: ");
     std::cin >> fib;
     
-    printf("Fib num: %i\n", matrixFib(fib));
-    /*
-    printf("Recursive time: %lld\n", timeFunction(recFib, fib));
-    printf("Iterative time: %lld\n", timeFunction(iterFib, fib));
-    printf("Matrix time: %lld\n", timeFunction(matrixFib, fib));
-    */
+    printf("Recursive time: %lld, %lld\n", timeFunction(recFib, fib), recFib(fib));
+    printf("Iterative time: %lld, %lld\n", timeFunction(iterFib, fib), iterFib(fib));
+    printf("Matrix time: %lld, %lld\n", timeFunction(matrixFib, fib), matrixFib(fib));
+
     return 0;
 }
 
@@ -49,7 +47,7 @@ long long recFib(int n) {
 }
 
 long long iterFib(int n) {
-    int A[n + 1];
+    long long A[n + 1];
 
     // Slides say A[0] == 1 but I think it should be 0?
     A[0] = 0;
@@ -68,7 +66,7 @@ long long matrixFib(int n) {
 
     matrix << 1, 1,
               1, 0;
-              
+
     Eigen::Matrix2d result = Eigen::Matrix2d::Identity();
     for (int i = 0; i < n - 1; ++i) {
         result *= matrix;
