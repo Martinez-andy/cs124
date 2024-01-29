@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <chrono>
 #include "/Users/andymartinez/eigen-3.4.0/Eigen/Dense"
+#include <utility>
 
 template<typename Function, typename... Args>
-long long timeFunction(Function&& func, Args&&... args);
+std::pair<long long, decltype(std::declval<Function>()(std::declval<Args>()...))>
+timeFunction(Function&& func, Args&&... args);
 long long recFib(int n);
 long long iterFib(int n);
 long long matrixFib(int n);
@@ -14,16 +16,21 @@ int main() {
     int fib;
     printf("Fib Number: ");
     std::cin >> fib;
+
+    auto iterative = timeFunction(iterFib, fib);
+    auto recursive = timeFunction(recFib, fib);
+    auto matrix = timeFunction(matrixFib, fib);
     
-    printf("Recursive time: %lld, %lld\n", timeFunction(recFib, fib), recFib(fib));
-    printf("Iterative time: %lld, %lld\n", timeFunction(iterFib, fib), iterFib(fib));
-    printf("Matrix time: %lld, %lld\n", timeFunction(matrixFib, fib), matrixFib(fib));
+    printf("Recursive time: %lld, %lld\n", recursive.first, recursive.second);
+    printf("Iterative time: %lld, %lld\n", iterative.first, iterative.second);
+    printf("Matrix time: %lld, %lld\n", matrix.first, matrix.second);
 
     return 0;
 }
 
 template<typename Function, typename... Args>
-long long timeFunction(Function&& func, Args&&... args) {
+std::pair<long long, decltype(std::declval<Function>()(std::declval<Args>()...))>
+timeFunction(Function&& func, Args&&... args) {
     // Open namespaces for chrono, makes for cleaner code.
     using namespace std::chrono; 
 
@@ -31,13 +38,15 @@ long long timeFunction(Function&& func, Args&&... args) {
     auto start = high_resolution_clock::now(); 
 
     // Call function on provided input
-    std::forward<Function>(func)(std::forward<Args>(args)...); 
+    auto res = std::forward<Function>(func)(std::forward<Args>(args)...); 
 
     // End timer
     auto end = high_resolution_clock::now();
 
+    auto timeTaken = duration_cast<microseconds>(end - start).count(); 
+
     // Calculate and return time it took function to execute.
-    return duration_cast<microseconds>(end - start).count(); 
+    return std::make_pair(timeTaken, res);
 }
 
 long long recFib(int n) {
@@ -68,6 +77,7 @@ long long matrixFib(int n) {
               1, 0;
 
     Eigen::Matrix2d result = Eigen::Matrix2d::Identity();
+
     for (int i = 0; i < n - 1; ++i) {
         result *= matrix;
     }
