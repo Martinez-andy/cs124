@@ -1,13 +1,13 @@
 #include <iostream>
 #include <stdio.h>
 #include <chrono>
-#include <Eigen/Dense>
+#include "/Users/andymartinez/eigen-3.4.0/Eigen/Dense"
 
 template<typename Function, typename... Args>
 long long timeFunction(Function&& func, Args&&... args);
-int recFib(int n);
-int iterFib(int n);
-int matrixFib(int n);
+long long recFib(int n);
+long long iterFib(int n);
+long long matrixFib(int n);
 
 
 int main() {
@@ -42,13 +42,13 @@ long long timeFunction(Function&& func, Args&&... args) {
     return duration_cast<microseconds>(end - start).count(); 
 }
 
-int recFib(int n) {
+long long recFib(int n) {
     if (n <= 1) 
         return n;
     return recFib(n - 1) + recFib(n - 2);
 }
 
-int iterFib(int n) {
+long long iterFib(int n) {
     int A[n + 1];
 
     // Slides say A[0] == 1 but I think it should be 0?
@@ -61,6 +61,19 @@ int iterFib(int n) {
     return A[n];
 }
 
-int matrixFib(int n) {
-    return n;
+long long matrixFib(int n) {
+    Eigen::Matrix2d matrix;
+    Eigen::Vector2d init;
+    init << 1, 0;
+
+    matrix << 1, 1,
+              1, 0;
+              
+    Eigen::Matrix2d result = Eigen::Matrix2d::Identity();
+    for (int i = 0; i < n - 1; ++i) {
+        result *= matrix;
+    }
+
+    Eigen::Vector2d res = result * init;
+    return std::round(res[0]);
 }
