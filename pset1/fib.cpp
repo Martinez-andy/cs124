@@ -11,12 +11,15 @@ int matrixFib(int n);
 
 int main() {
     int fib;
-    printf("Fib Number: ");
+    printf("Fib Number: \n");
     std::cin >> fib;
     
+    printf("Fib num: %d\n", iterFib(fib) == recFib(fib));
+    /*
     printf("Recursive time: %lld\n", timeFunction(recFib, fib));
     printf("Iterative time: %lld\n", timeFunction(iterFib, fib));
     printf("Matrix time: %lld\n", timeFunction(matrixFib, fib));
+    */
     return 0;
 }
 
@@ -45,7 +48,16 @@ int recFib(int n) {
 }
 
 int iterFib(int n) {
-    return n;
+    int A[n + 1];
+
+    // Slides say A[0] == 1 but I think it should be 0?
+    A[0] = 0;
+    A[1] = 1;
+
+    for (int i = 2; i < n + 1; i++)
+        A[i] = A[i - 1] + A[i - 2];
+
+    return A[n];
 }
 
 int matrixFib(int n) {
