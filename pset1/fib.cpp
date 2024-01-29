@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <chrono>
+#include <Eigen/Dense>
 
 template<typename Function, typename... Args>
 long long timeFunction(Function&& func, Args&&... args);
@@ -14,7 +15,7 @@ int main() {
     printf("Fib Number: \n");
     std::cin >> fib;
     
-    printf("Fib num: %d\n", iterFib(fib) == recFib(fib));
+    printf("Fib num: %i\n", matrixFib(fib));
     /*
     printf("Recursive time: %lld\n", timeFunction(recFib, fib));
     printf("Iterative time: %lld\n", timeFunction(iterFib, fib));
@@ -63,5 +64,3 @@ int iterFib(int n) {
 int matrixFib(int n) {
     return n;
 }
-
-
