@@ -12,17 +12,13 @@ long long recFib(int n);
 long long iterFib(int n);
 long long matrixFib(int n);
 Eigen::Matrix2d repeatedSquare(Eigen::Matrix2d matrix, int pow);
-long long squaredFib(int n);
-
 
 int main() {
     int fib;
     printf("Fib Number: ");
     std::cin >> fib;
 
-    printf("%d", matrixFib(fib) == squaredFib(fib));
 
-    /*
     auto iterative = timeFunction(iterFib, fib);
     auto recursive = timeFunction(recFib, fib);
     auto matrix = timeFunction(matrixFib, fib);
@@ -30,7 +26,6 @@ int main() {
     printf("Recursive time: %lld, %lld\n", recursive.first, recursive.second);
     printf("Iterative time: %lld, %lld\n", iterative.first, iterative.second);
     printf("Matrix time: %lld, %lld\n", matrix.first, matrix.second);
-    */
 
     return 0;
 }
@@ -75,6 +70,10 @@ long long iterFib(int n) {
     return A[n];
 }
 
+
+
+
+
 long long matrixFib(int n) {
     Eigen::Matrix2d matrix;
     Eigen::Vector2d init;
@@ -83,11 +82,7 @@ long long matrixFib(int n) {
     matrix << 1, 1,
               1, 0;
 
-    Eigen::Matrix2d result = Eigen::Matrix2d::Identity();
-
-    for (int i = 0; i < n - 1; ++i) {
-        result *= matrix;
-    }
+    Eigen::Matrix2d result = repeatedSquare(matrix, n - 1);
 
     Eigen::Vector2d res = result * init;
     return std::round(res[0]);
@@ -106,19 +101,4 @@ Eigen::Matrix2d repeatedSquare(Eigen::Matrix2d matrix, int pow) {
     }
 
     return result;
-}
-
-
-long long squaredFib(int n) {
-    Eigen::Matrix2d matrix;
-    Eigen::Vector2d init;
-    init << 1, 0;
-
-    matrix << 1, 1,
-              1, 0;
-
-    Eigen::Matrix2d result = repeatedSquare(matrix, n);
-
-    Eigen::Vector2d res = result * init;
-    return std::round(res[0]);
 }
