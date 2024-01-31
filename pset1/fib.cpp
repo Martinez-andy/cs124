@@ -20,10 +20,13 @@ int main() {
 
 
     auto iterative = timeFunction(iterFib, fib);
-    auto recursive = timeFunction(recFib, fib);
     auto matrix = timeFunction(matrixFib, fib);
+
+    /*
+    auto recursive = timeFunction(recFib, fib); 
+    printf("Recursive time: %lld, %lld\n", recursive.first, recursive.second);   
+    */
     
-    printf("Recursive time: %lld, %lld\n", recursive.first, recursive.second);
     printf("Iterative time: %lld, %lld\n", iterative.first, iterative.second);
     printf("Matrix time: %lld, %lld\n", matrix.first, matrix.second);
 
