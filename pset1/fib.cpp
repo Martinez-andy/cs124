@@ -70,10 +70,6 @@ long long iterFib(int n) {
     return A[n];
 }
 
-
-
-
-
 long long matrixFib(int n) {
     Eigen::Matrix2d matrix;
     Eigen::Vector2d init;
