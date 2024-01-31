@@ -5,11 +5,11 @@ def main():
     fib = int(input("Fib number: "))
     
     iter = timeFunc(iterFib, fib)
-    rec = timeFunc(recFib, fib)
+    # rec = timeFunc(recFib, fib)
     mat = timeFunc(matrixFib, fib)
     
     print(f"Iterative time: {iter[0]}, {iter[1]}")
-    print(f"Recursive time: {rec[0]}, {rec[1]}")
+    # print(f"Recursive time: {rec[0]}, {rec[1]}")
     print(f"Matix time: {mat[0]}, {mat[1]}")
     
     return 0
