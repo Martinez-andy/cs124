@@ -47,11 +47,13 @@ def T(n: int):
     if n == 1:
         return 1
 
-    return T(n - 1) + (n ** 2) - n
+    return T(n-1) + n ** 2 - n
+
+def closed(n: int):
+    return (n ** 3 - n + 3) // 3
 
 vals = []
-for i in range(1, 100):
+for i in range(1, 11):
     vals.append(T(i))
-    if i > 1:
-        print(vals[i - 1] / vals[i - 2])
+    assert (closed(i) == vals[-1])
 print(vals)
