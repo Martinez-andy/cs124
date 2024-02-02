@@ -1,23 +1,26 @@
 import numpy as np
 import time
+import sys
+
+modVal = 2 ** 16
 
 def main():
     fib = int(input("Fib number: "))
     
-    rec = timeFunc(recFib, fib)
-    iter = timeFunc(iterFib, fib)
+    # rec = timeFunc(recFib, fib)
+    # iter = timeFunc(iterFib, fib)
     mat = timeFunc(matrixFib, fib)
     
-    print(f"Recursive time: {rec[0]}, {rec[1]}")
-    print(f"Iterative time: {iter[0]}, {iter[1]}")
-    print(f"Matix time: {mat[0]}, {mat[1]}")
+    # print(f"Recursive time: {rec[0]}")
+    # print(f"Iterative time: {iter[0]}")
+    print(f"Matix time: {mat[0]}")
     
     return 0
 
 def recFib(n: int):
     if n <= 1:
-        return n
-    return recFib(n - 1) + recFib(n - 2)
+        return n % modVal
+    return (recFib(n - 1) % modVal) + (recFib(n - 2) % modVal)
 
 def matrixFib(n: int):
     fibMat = np.array([[1, 1], 
@@ -29,7 +32,7 @@ def matrixFib(n: int):
 def iterFib(n: int):
     A = [0, 1]
     for i in range(2, n + 1):
-        A.append(A[i - 1] + A[i - 2])
+        A.append((A[i - 1] + A[i - 2]) % modVal)
     return A[n]
 
 def timeFunc(func, arg):
