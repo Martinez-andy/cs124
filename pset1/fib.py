@@ -5,7 +5,9 @@ import sys
 modVal = 2 ** 16
 
 def main():
-    fib = int(input("Fib number: "))
+    print("Running program")
+    
+    fib = 2 ** 1000000
     
     # rec = timeFunc(recFib, fib)
     # iter = timeFunc(iterFib, fib)
@@ -41,4 +43,15 @@ def timeFunc(func, arg):
     end = time.time()
     return (end - start), res
 
-main()
+def T(n: int):
+    if n == 1:
+        return 1
+
+    return T(n - 1) + (n ** 2) - n
+
+vals = []
+for i in range(1, 100):
+    vals.append(T(i))
+    if i > 1:
+        print(vals[i - 1] / vals[i - 2])
+print(vals)
