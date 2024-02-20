@@ -5,6 +5,7 @@
 #include <tuple>
 #include <stdexcept>
 #include <cmath>
+#include <random>
 
 // Graph implementation (Adjacancy list):
 /*
@@ -53,11 +54,33 @@ class Graph{
         // HANDLE CASE 1 BROTHER
 
         // Adds nodes and maintains the complete graph invariant.
-        void addNode(std::vector<double> coord) {
+        void addNode(std::vector<double> coord, bool isCase1) {
             // Assign coordinate to a node number
             numToNode.push_back(coord);
             std::vector<double> initial =  {0.};
             adjacencyMatrix.push_back(initial);
+
+
+            if (isCase1) {
+                for (size_t i = 0; i < numToNode.size(); i++) {
+                    // Generate a random number from a uniform distribution:
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+
+                    std::uniform_real_distribution<double> dist(0.0, 1.0);
+                    double random_number = dist(gen);
+
+
+                    std::vector<double> initial = {random_number};
+
+                    adjacencyMatrix.push_back(initial);
+                    adjacencyMatrix[i].push_back(random_number);
+
+                    // Add to edgelist
+                }
+                return;
+            }
+
 
             // Add edgeweights to adj matrix
             for (size_t i = 0; i < numToNode.size(); i++) {
@@ -65,11 +88,13 @@ class Graph{
                 double dist = distance(coord, numToNode[i]);
 
                 // Distance becomes edge weight
-                std::vector<double> initial =  {dist};
+                std::vector<double> initial = {dist};
 
-                adjacencyMatrix[nodeNumber].push_back(dist);
+                adjacencyMatrix.push_back(initial);
                 adjacencyMatrix[i].push_back(dist);
-                // Add distance nodeNumber tuple onto the edgeList.
+
+
+                // FIX EDGE LIST!!
                 edgeList.push_back(std::make_tuple(dist, nodeNumber));
             }
             nodeNumber++;
