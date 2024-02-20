@@ -111,7 +111,7 @@ class Graph{
         std::vector<std::tuple<double, std::tuple<int, int>>> getEdgeList() {
             return edgeList;
         }
-}
+};
 
 
 int main(int argc, char* argv[]) {
