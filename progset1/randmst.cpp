@@ -38,7 +38,7 @@ class Graph{
             tuple of length 2, 0th element contains edgeweight and 1st
             contains the node number
         */
-        std::vector<std::tuple<double, int>> edgeList;
+        std::vector<std::tuple<double, std::tuple<int, int>>> edgeList;
         
         /*
             Adjacency matrix, a vector of vectors. i-th
@@ -77,7 +77,9 @@ class Graph{
                     adjacencyMatrix[i].push_back(random_number);
 
                     // Add to edgelist
+                    edgeList.push_back(std::make_tuple(random_number, std::make_tuple(nodeNumber, i)));
                 }
+                nodeNumber++;
                 return;
             }
 
@@ -95,7 +97,7 @@ class Graph{
 
 
                 // FIX EDGE LIST!!
-                edgeList.push_back(std::make_tuple(dist, nodeNumber));
+                edgeList.push_back(std::make_tuple(dist, std::make_tuple(nodeNumber, i)));
             }
             nodeNumber++;
         }
@@ -106,7 +108,7 @@ class Graph{
         }
 
         // Returns the edgelist (useful for Kruskal's alg)
-        std::vector<std::tuple<double, int>> getEdgeList() {
+        std::vector<std::tuple<double, std::tuple<int, int>>> getEdgeList() {
             return edgeList;
         }
 }
