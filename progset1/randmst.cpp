@@ -56,6 +56,8 @@ class Graph{
         void addNode(std::vector<double> coord) {
             // Assign coordinate to a node number
             numToNode.push_back(coord);
+            std::vector<double> initial =  {0.};
+            adjacencyMatrix.push_back(initial);
 
             // Add edgeweights to adj matrix
             for (size_t i = 0; i < numToNode.size(); i++) {
@@ -63,8 +65,10 @@ class Graph{
                 double dist = distance(coord, numToNode[i]);
 
                 // Distance becomes edge weight
-                adjacencyMatrix[i][nodeNumber] = dist;
-                adjacencyMatrix[nodeNumber][i] = dist;
+                std::vector<double> initial =  {dist};
+
+                adjacencyMatrix[nodeNumber].push_back(dist);
+                adjacencyMatrix[i].push_back(dist);
                 // Add distance nodeNumber tuple onto the edgeList.
                 edgeList.push_back(std::make_tuple(dist, nodeNumber));
             }
