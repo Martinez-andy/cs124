@@ -111,19 +111,19 @@ class Graph{
         std::vector<std::tuple<double, std::tuple<int, int>>> getEdgeList() {
             return edgeList;
         }
+
+        int getSize() {
+            return nodeNum + 1;
+        }
 };
 
 class UnionFind{
     public:
         // Constructor
         UnionFind(int size) {
-            Set.resize(size);
-        }
-
-        // Implement Makeset
-        void MakeSet(int nodeNum) {
-            Set[nodeNum] = std::make_tuple(nodeNum, 0);
-            return;
+            for (size_t i = 0; i < size; i++) {
+                MakeSet(i);
+            }
         }
 
         // Find returns a nodeNum, rank tuple of root of set. Uses recursion for the path compression.
@@ -147,34 +147,41 @@ class UnionFind{
         }
 
     private:
+        // Initializes the set
         std::vector<std::tuple<int, int>> Set;
+
+        // Makeset (Added to private because as soon as we initialize a UnionFind obj we add all verts)
+        void MakeSet(int nodeNum) {
+            Set[nodeNum] = std::make_tuple(nodeNum, 0);
+            return;
+        }
+
         // Link by rank method. Uses recursion on improperly ordered elements.
         // Link takes in nodeNum, rank tuples as input and returns nothing.
         void Link(std::tuple<int, int> num1, std::tuple<int, int> num2) {
             int rank1 = std::get<1>(num1);
             int rank2 = std::get<1>(num2);
 
+            // If rank1 > rank2, swap
             if (rank1 > rank2) {
                 // swap
                 Link(num2, num1);
                 return;
             }
-
+            // Save node numbers into variables
             int nodeNum1 = std::get<0>(num1);
             int nodeNum2 = std::get<0>(num2);
 
+            // If the two are of equal size, increment rank.
             if (rank1 == rank2) {
                 int nodeNum2 = std::get<0>(num2);
                 Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
             }
+            // Set nodeNum1 (root w smaller rank) to point to nodeNum2 (root w larger rank)
             Set[nodeNum1] = std::make_tuple(nodeNum2, rank1);
             return;
         }
 };
-
-
-
-
 
 
 int main(int argc, char* argv[]) {
@@ -197,12 +204,18 @@ int main(int argc, char* argv[]) {
         and edge weights are equal to the euclidean distance between nodes
     */
 
-double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist) {
+double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size) {
     // Sort the edge lists by their edge weights
     std::sort(edgelist.begin(), edgelist.end(), 
               [](const auto& lhs, const auto& rhs) {
                   return std::get<0>(lhs) < std::get<0>(rhs);
               });
+
+    UnionFind(size) set;
+
+    
+
+
     return 0.0;
     // Create array for union find thing
     
