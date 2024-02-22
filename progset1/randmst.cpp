@@ -75,7 +75,6 @@ class Graph{
                     // Add to edgelist
                     edgeList.push_back(std::make_tuple(random_number, std::make_tuple(nodeNumber, i)));
                 }
-                nodeNumber++;
             }
             else {
                  // Assign coordinate to a node number
