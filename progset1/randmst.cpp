@@ -5,7 +5,6 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
-#include "kruskal.h"
 
 
 
@@ -126,6 +125,7 @@ class UnionFind{
             Set[nodeNum] = std::make_tuple(nodeNum, 0);
             return;
         }
+
         // Implement Find
         std::tuple<int, int> Find(int nodeNum) {
             // Base case
@@ -150,9 +150,9 @@ class UnionFind{
 
             else if (rank1 == rank2) {
                 int nodeNum2 = std::get<0>(num2);
-                Sum[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
+                Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
             }
-            Sum[nodeNum1] = Sum[nodeNum2];
+            Set[nodeNum1] = Set[nodeNum2];
             return;
         }
 
@@ -164,7 +164,7 @@ class UnionFind{
 
     private:
         std::vector<std::tuple<int, int>> Set;
-}
+};
 
 
 
@@ -193,11 +193,11 @@ int main(int argc, char* argv[]) {
 
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist) {
     // Sort the edge lists by their edge weights
-    std::sort(edgeList.begin(), edgeList.end(), 
+    std::sort(edgelist.begin(), edgelist.end(), 
               [](const auto& lhs, const auto& rhs) {
                   return std::get<0>(lhs) < std::get<0>(rhs);
               });
-
+    return 0.0;
     // Create array for union find thing
     
 
