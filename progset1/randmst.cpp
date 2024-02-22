@@ -5,6 +5,7 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include <string>
 
 
 
@@ -192,6 +193,13 @@ int main(int argc, char* argv[]) {
     if (argc != 5) {
         printf("4 inputs needed: 0 numpoints numtrials dimension");
     }
+
+    int size = std::stoi(argv[2]);
+
+    int numtrials = std::stoi(argv[3]);
+
+    int dimension = std::stoi(argv[4]);
+
     return 0;
 }
 
@@ -206,6 +214,9 @@ int main(int argc, char* argv[]) {
         and edge weights are equal to the euclidean distance between nodes
     */
 
+
+// Implementation of Kruskal's algorithm. Takes in the edgelist from the graph class as input as well as the size
+// of the graph (number of nodes) as input.
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size) {
     // Sort the edge lists by their edge weights
     std::sort(edgelist.begin(), edgelist.end(), 
