@@ -7,13 +7,7 @@
 #include <algorithm>
 #include <string>
 
-
-
-// Graph implementation (Adjacancy list):
-/*
-    Graph implementation (Adjacency list):
-
-*/
+double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size);
 
 double distance(std::vector<double> c1, std::vector<double> c2) {
     if (c1.empty() || c2.empty() || c1.size() != c2.size()) {
@@ -62,6 +56,9 @@ class Graph{
                 adjacencyMatrix.push_back(std::vector<double>());
 
                 for (size_t i = 0; i < numToNode.size(); i++) {
+                    // Make sure no self loops exist
+                    if (i == nodeNumber) continue;
+
                     // Generate a random number from a uniform distribution:
                     std::random_device rd;
                     std::mt19937 gen(rd());
@@ -86,6 +83,7 @@ class Graph{
 
                 // Add edgeweights to adj matrix
                 for (size_t i = 0; i < numToNode.size(); i++) {
+                    // Make sure no self loops exist.
                     if (i == nodeNumber) continue;
 
                     // Calculate distance
@@ -194,13 +192,48 @@ int main(int argc, char* argv[]) {
         printf("4 inputs needed: 0 numpoints numtrials dimension");
     }
 
-    int size = std::stoi(argv[2]);
+    int n = std::stoi(argv[2]);
 
     int numtrials = std::stoi(argv[3]);
 
     int dimension = std::stoi(argv[4]);
 
-    return 0;
+    // Create graph object
+    Graph graph;
+
+    if (dimension == 0) {
+
+        // Add all the nodes (vecotors don't matter since 0-dimensional.)
+        // Number are randomly generated in the addNode method for 0-D graphs.
+        for (size_t i; i < n; i++) {
+            graph.addNode({0.0}, true);
+        }
+    } 
+    else {
+
+        // Construct graphs for 2-D, 3-D, and 4-D cases
+        for (size_t i; i < n; i++) {
+            // Generate coords randomly and add dimensions
+            std::vector<double> coord;
+            for (size_t i; i < dimension; i++) {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+
+                std::uniform_real_distribution<double> dist(0.0, 1.0);
+                double random_number = dist(gen);
+
+                coord.push_back(random_number);
+            }
+            graph.addNode(coord, false);
+        }
+
+    }
+
+    double totalWeight = kruskals(graph.getEdgeList(), n);
+
+    std::cout << totalWeight << std::endl;
+
+    return totalWeight;
 }
 
     /*
