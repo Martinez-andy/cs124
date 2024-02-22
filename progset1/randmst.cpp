@@ -78,12 +78,16 @@ class Graph{
                 nodeNumber++;
             }
             else {
-                            // Assign coordinate to a node number
+                 // Assign coordinate to a node number
                 numToNode.push_back(coord);
+                // Initialize a new row for this new node
                 adjacencyMatrix.push_back(std::vector<double>());
+
 
                 // Add edgeweights to adj matrix
                 for (size_t i = 0; i < numToNode.size(); i++) {
+                    if (i == nodeNumber) continue;
+
                     // Calculate distance
                     double dist = distance(coord, numToNode[i]);
 
