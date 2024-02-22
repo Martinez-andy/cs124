@@ -123,15 +123,36 @@ class UnionFind{
 
         // Implement Makeset
         void MakeSet(int nodeNum) {
-            std::tuple<int, int> Set[nodeNum] = std::make_tuple(nodeNum, 0);
+            Set[nodeNum] = std::make_tuple(nodeNum, 0);
             return;
         }
         // Implement Find
-        int Find(int nodeNum) {
-            return 0;
+        std::tuple<int, int> Find(int nodeNum) {
+            // Base case
+            if (std::get<0>(Set[nodeNum]) == nodeNum) return Set[nodeNum];
+
+            // Recursive step
+            Set[nodeNum] = Find(std::get<0>(Set[nodeNum]));
+
+            return Set[nodeNum];
         }
+
         // Implement Link
-        void Link(int num1, int num2) {
+        void Link(std::tuple<int, int> num1, std::tuple<int, int> num2) {
+            int rank1 = std::get<1>(num1);
+            int rank2 = std::get<1>(num2);
+            int nodeNum1 = std::get<0>(num1);
+            int nodeNum2 = std::get<0>(num2);
+
+            if (rank1 > rank2) {
+                // swap
+            }
+
+            else if (rank1 == rank2) {
+                int nodeNum2 = std::get<0>(num2);
+                Sum[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
+            }
+            Sum[nodeNum1] = Sum[nodeNum2];
             return;
         }
 
