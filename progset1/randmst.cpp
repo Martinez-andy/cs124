@@ -126,37 +126,21 @@ class UnionFind{
             return;
         }
 
-        // Implement Find
+        // Find returns a nodeNum, rank tuple of root of set. Uses recursion for the path compression.
         std::tuple<int, int> Find(int nodeNum) {
             // Base case
             if (std::get<0>(Set[nodeNum]) == nodeNum) return Set[nodeNum];
 
-            // Recursive step
+            // Recursive step (Compresses path of all elements in path.)
             Set[nodeNum] = Find(std::get<0>(Set[nodeNum]));
 
             return Set[nodeNum];
         }
 
-        // Implement Link
-        void Link(std::tuple<int, int> num1, std::tuple<int, int> num2) {
-            int rank1 = std::get<1>(num1);
-            int rank2 = std::get<1>(num2);
-            int nodeNum1 = std::get<0>(num1);
-            int nodeNum2 = std::get<0>(num2);
+        // Link is in the private poriton. This is because only Union uses the link method
 
-            if (rank1 > rank2) {
-                // swap
-            }
 
-            else if (rank1 == rank2) {
-                int nodeNum2 = std::get<0>(num2);
-                Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
-            }
-            Set[nodeNum1] = Set[nodeNum2];
-            return;
-        }
-
-        // Implement Union
+        // Union method as provided in the lecture slides. Unions two sets and returns nothing.
         void Union(int num1, int num2) {
             Link(Find(num1), Find(num2));
             return;
@@ -164,6 +148,28 @@ class UnionFind{
 
     private:
         std::vector<std::tuple<int, int>> Set;
+        // Link by rank method. Uses recursion on improperly ordered elements.
+        // Link takes in nodeNum, rank tuples as input and returns nothing.
+        void Link(std::tuple<int, int> num1, std::tuple<int, int> num2) {
+            int rank1 = std::get<1>(num1);
+            int rank2 = std::get<1>(num2);
+
+            if (rank1 > rank2) {
+                // swap
+                Link(num2, num1);
+                return;
+            }
+
+            int nodeNum1 = std::get<0>(num1);
+            int nodeNum2 = std::get<0>(num2);
+
+            else if (rank1 == rank2) {
+                int nodeNum2 = std::get<0>(num2);
+                Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
+            }
+            Set[nodeNum1] = set::make_tuple(nodeNum2, rank1);
+            return;
+        }
 };
 
 
