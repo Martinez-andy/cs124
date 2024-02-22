@@ -1,11 +1,10 @@
 #include <iostream>
-#include <cstdio>
-#include <vector>
-#include <algorithm>
 #include <tuple>
+#include <vector>
 #include <stdexcept>
 #include <cmath>
 #include <random>
+
 
 // Graph implementation (Adjacancy list):
 /*
@@ -32,7 +31,7 @@ class Graph{
         // A counter that will give each node a unique int ID number. Used for indexing in numToNode
         int nodeNumber;
         // Maps a nodeNumber to a node's coordinate value
-        std::vector<std::vector<double>> numToNode;
+        std::vector<std::vector<double> > numToNode;
         /*
             Edge list is a list of tuples. Each element in edgelist is a 
             tuple of length 2, 0th element contains edgeweight and 1st
