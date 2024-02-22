@@ -117,6 +117,8 @@ class Graph{
         }
 };
 
+
+// Implementation of UnionFind class
 class UnionFind{
     public:
         // Constructor
@@ -210,13 +212,25 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
               [](const auto& lhs, const auto& rhs) {
                   return std::get<0>(lhs) < std::get<0>(rhs);
               });
+    // Instantiate UnionFind object
+    UnionFind set(size);
 
-    UnionFind unionfind(size);
+    // Create list of edges for the MST and var to hold total sum.
+    std::vector<std::tuple<int, int>> res;
+    double tot = 0;
 
+    for (std::tuple<double, std::tuple<int, int>> ele: edgelist) {
+        std::tuple<int, int> edge = std::get<1>(ele);
+        int nodeNum1 = std::get<0>(edge);
+        int nodeNum2 = std::get<1>(edge);
+        
+        if (set.Find(nodeNum1) == set.Find(nodeNum2)) {
+            res.push_back(edge);
+            tot += std::get<0>(ele);
+
+            set.Union(nodeNum1, nodeNum2);
+        }
+    }
     
     return 0.0;
-    // Create array for union find thing
-    
-
-    // 
 }
