@@ -113,7 +113,7 @@ class Graph{
         }
 
         int getSize() {
-            return nodeNum + 1;
+            return nodeNumber + 1;
         }
 };
 
@@ -211,11 +211,9 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
                   return std::get<0>(lhs) < std::get<0>(rhs);
               });
 
-    UnionFind(size) set;
+    UnionFind unionfind(size);
 
     
-
-
     return 0.0;
     // Create array for union find thing
     
