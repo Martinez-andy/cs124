@@ -54,10 +54,10 @@ class Graph{
 
         // Adds nodes and maintains the complete graph invariant.
         void addNode(std::vector<double> coord, bool isCase1) {
-
-
-
             if (isCase1) {
+                numToNode.push_back(std::vector<double>((double) nodeNumber));
+                adjacencyMatrix.push_back(std::vector<double>());
+
                 for (size_t i = 0; i < numToNode.size(); i++) {
                     // Generate a random number from a uniform distribution:
                     std::random_device rd;
@@ -67,10 +67,8 @@ class Graph{
                     double random_number = dist(gen);
 
 
-                    std::vector<double> initial = {random_number};
-
-                    adjacencyMatrix.push_back(initial);
-                    adjacencyMatrix[i].push_back(random_number);
+                    // Add random number to adj matrix
+                    adjacencyMatrix[nodeNumber].push_back(random_number);
 
                     // Add to edgelist
                     edgeList.push_back(std::make_tuple(random_number, std::make_tuple(nodeNumber, i)));
