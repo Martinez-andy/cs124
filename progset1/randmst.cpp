@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <cmath>
 #include <random>
+#include <algorithm>
 
 
 // Graph implementation (Adjacancy list):
@@ -91,7 +92,8 @@ class Graph{
                     // Distance becomes edgeweight
                     adjacencyMatrix[nodeNumber].push_back(dist);
 
-                    // FIX EDGE LIST!!
+                    // Adds entry into edge list. Format: (edgeweight, edge-relation)
+                    // AKA identifies the edge based on node numbers.
                     edgeList.push_back(std::make_tuple(dist, std::make_tuple(nodeNumber, i)));
                 }
             }
@@ -130,3 +132,13 @@ int main(int argc, char* argv[]) {
         4.) Graph with n vertices where nodes are placed randomly into a unit hypercube
         and edge weights are equal to the euclidean distance between nodes
     */
+
+double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist) {
+    // Sort the edge lists by their edge weights
+    std::sort(edgeList.begin(), edgeList.end(), 
+              [](const auto& lhs, const auto& rhs) {
+                  return std::get<0>(lhs) < std::get<0>(rhs);
+              });
+
+    
+}
