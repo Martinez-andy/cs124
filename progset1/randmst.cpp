@@ -163,11 +163,11 @@ class UnionFind{
             int nodeNum1 = std::get<0>(num1);
             int nodeNum2 = std::get<0>(num2);
 
-            else if (rank1 == rank2) {
+            if (rank1 == rank2) {
                 int nodeNum2 = std::get<0>(num2);
                 Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
             }
-            Set[nodeNum1] = set::make_tuple(nodeNum2, rank1);
+            Set[nodeNum1] = std::make_tuple(nodeNum2, rank1);
             return;
         }
 };
