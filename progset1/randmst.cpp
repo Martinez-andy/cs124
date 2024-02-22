@@ -9,19 +9,27 @@
 
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size);
 
+// Finds the Euclidean distance between two coordinate points given (coords are given as vectors)
 double distance(std::vector<double> c1, std::vector<double> c2) {
+    // Handle improper inputs and throws an error if needed
     if (c1.empty() || c2.empty() || c1.size() != c2.size()) {
         throw std::invalid_argument("Coordinate's are of different size");
     }
 
+    // accumulator
     long double acc = 0;
+    // Temporary variable used for calculating the difference between indiviaul coords (aka x - x, y- y, ect.)
     double diff;
+
+    // Iterate over all coordinates, find square difference and add to accumulator
     for (size_t i = 0; i < c1.size(); i++) {
         diff = (c1[i] - c2[i]);
         acc += diff * diff;
     }
+    // Square root accumulator
     return (double) std::sqrt(acc);
 }
+
 
 class Graph{
     private:
@@ -55,6 +63,7 @@ class Graph{
                 numToNode.push_back(std::vector<double>((double) nodeNumber));
                 adjacencyMatrix.push_back(std::vector<double>());
 
+                // Iterate over all nodes and add edges (since graph is complete)
                 for (size_t i = 0; i < numToNode.size(); i++) {
                     // Make sure no self loops exist
                     if (i == nodeNumber) continue;
@@ -97,6 +106,7 @@ class Graph{
                     edgeList.push_back(std::make_tuple(dist, std::make_tuple(nodeNumber, i)));
                 }
             }
+            // Update nodeNumber
             nodeNumber++;
             return;
         }
@@ -109,10 +119,6 @@ class Graph{
         // Returns the edgelist (useful for Kruskal's alg)
         std::vector<std::tuple<double, std::tuple<int, int>>> getEdgeList() {
             return edgeList;
-        }
-
-        int getSize() {
-            return nodeNumber + 1;
         }
 };
 
