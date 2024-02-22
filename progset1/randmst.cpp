@@ -54,10 +54,7 @@ class Graph{
 
         // Adds nodes and maintains the complete graph invariant.
         void addNode(std::vector<double> coord, bool isCase1) {
-            // Assign coordinate to a node number
-            numToNode.push_back(coord);
-            std::vector<double> initial =  {0.};
-            adjacencyMatrix.push_back(initial);
+
 
 
             if (isCase1) {
@@ -79,26 +76,26 @@ class Graph{
                     edgeList.push_back(std::make_tuple(random_number, std::make_tuple(nodeNumber, i)));
                 }
                 nodeNumber++;
-                return;
             }
+            else {
+                            // Assign coordinate to a node number
+                numToNode.push_back(coord);
+                adjacencyMatrix.push_back(std::vector<double>());
 
+                // Add edgeweights to adj matrix
+                for (size_t i = 0; i < numToNode.size(); i++) {
+                    // Calculate distance
+                    double dist = distance(coord, numToNode[i]);
 
-            // Add edgeweights to adj matrix
-            for (size_t i = 0; i < numToNode.size(); i++) {
-                // Calculate distance
-                double dist = distance(coord, numToNode[i]);
+                    // Distance becomes edgeweight
+                    adjacencyMatrix[nodeNumber].push_back(dist);
 
-                // Distance becomes edge weight
-                std::vector<double> initial = {dist};
-
-                adjacencyMatrix.push_back(initial);
-                adjacencyMatrix[i].push_back(dist);
-
-
-                // FIX EDGE LIST!!
-                edgeList.push_back(std::make_tuple(dist, std::make_tuple(nodeNumber, i)));
+                    // FIX EDGE LIST!!
+                    edgeList.push_back(std::make_tuple(dist, std::make_tuple(nodeNumber, i)));
+                }
             }
             nodeNumber++;
+            return;
         }
 
         // Returns the adjacencyMatrix, aka the graph.
