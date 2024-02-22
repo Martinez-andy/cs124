@@ -114,6 +114,41 @@ class Graph{
         }
 };
 
+class UnionFind{
+    public:
+        // Constructor
+        UnionFind(int size) {
+            Set.resize(size);
+        }
+
+        // Implement Makeset
+        void MakeSet(int nodeNum) {
+            std::tuple<int, int> Set[nodeNum] = std::make_tuple(nodeNum, 0);
+            return;
+        }
+        // Implement Find
+        int Find(int nodeNum) {
+            return 0;
+        }
+        // Implement Link
+        void Link(int num1, int num2) {
+            return;
+        }
+
+        // Implement Union
+        void Union(int num1, int num2) {
+            Link(Find(num1), Find(num2));
+            return;
+        }
+
+    private:
+        std::vector<std::tuple<int, int>> Set;
+}
+
+
+
+
+
 
 int main(int argc, char* argv[]) {
     // ./randmst 0 numpoints numtrials dimension
@@ -142,5 +177,8 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist) 
                   return std::get<0>(lhs) < std::get<0>(rhs);
               });
 
+    // Create array for union find thing
     
+
+    // 
 }
