@@ -5,6 +5,8 @@
 #include <cmath>
 #include <random>
 #include <algorithm>
+#include "kruskal.h"
+
 
 
 // Graph implementation (Adjacancy list):
