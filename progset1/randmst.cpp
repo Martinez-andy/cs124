@@ -224,7 +224,7 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
         int nodeNum1 = std::get<0>(edge);
         int nodeNum2 = std::get<1>(edge);
         
-        if (set.Find(nodeNum1) == set.Find(nodeNum2)) {
+        if (set.Find(nodeNum1) != set.Find(nodeNum2)) {
             res.push_back(edge);
             tot += std::get<0>(ele);
 
@@ -232,5 +232,5 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
         }
     }
     
-    return 0.0;
+    return tot;
 }
