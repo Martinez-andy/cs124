@@ -264,7 +264,7 @@ int main(int argc, char* argv[]) {
 
     }
     double average = totalMSTWeight / numtrials;
-    std::cout << "Average total weight:" << average << std::endl;
+    std::cout << average << " " << n << " " << numtrials << " " << dimension <<std::endl;
     return 0;
 }
 
