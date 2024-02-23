@@ -6,6 +6,7 @@
 #include <random>
 #include <algorithm>
 #include <string>
+#include <chrono>
 
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size);
 
@@ -257,9 +258,17 @@ int main(int argc, char* argv[]) {
             }
 
         }
-        
+        // Start timer
+        auto start = std::chrono::high_resolution_clock::now();
+
         double treeWeight = kruskals(graph.getEdgeList(), n);
         totalMSTWeight += treeWeight;
+        // End timer
+        auto end = std::chrono::high_resolution_clock::now();
+
+        // Calculate and print time:
+        std::chrono::duration<double> duration = end - start;
+        std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
     }
     double average = totalMSTWeight / numtrials;
