@@ -128,6 +128,7 @@ class UnionFind{
     public:
         // Constructor
         UnionFind(int size) {
+            Set.resize(size);
             for (size_t i = 0; i < size; i++) {
                 MakeSet(i);
             }
@@ -218,10 +219,10 @@ int main(int argc, char* argv[]) {
     else {
 
         // Construct graphs for 2-D, 3-D, and 4-D cases
-        for (size_t i; i < n; i++) {
+        for (size_t i = 0; i < n; i++) {
             // Generate coords randomly and add dimensions
             std::vector<double> coord;
-            for (size_t i; i < dimension; i++) {
+            for (size_t j = 0; j < dimension; j++) {
                 std::random_device rd;
                 std::mt19937 gen(rd());
 
@@ -230,6 +231,7 @@ int main(int argc, char* argv[]) {
 
                 coord.push_back(random_number);
             }
+            std::cout << coord.size() << std::endl;
             graph.addNode(coord, false);
         }
 
