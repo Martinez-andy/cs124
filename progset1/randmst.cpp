@@ -231,6 +231,12 @@ int main(int argc, char* argv[]) {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
+    
+     // Start timer
+    auto start = std::chrono::high_resolution_clock::now();
+
+
+
     for (size_t i = 0; i < numtrials; i++) {
         // Restart graph object
         Graph graph;
@@ -258,19 +264,20 @@ int main(int argc, char* argv[]) {
             }
 
         }
-        // Start timer
-        auto start = std::chrono::high_resolution_clock::now();
+       
 
         double treeWeight = kruskals(graph.getEdgeList(), n);
         totalMSTWeight += treeWeight;
-        // End timer
-        auto end = std::chrono::high_resolution_clock::now();
-
-        // Calculate and print time:
-        std::chrono::duration<double> duration = end - start;
-        std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
-
     }
+
+    // End timer
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate and print time:
+    std::chrono::duration<double> duration = end - start;
+    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
+
+
     double average = totalMSTWeight / numtrials;
     std::cout << average << " " << n << " " << numtrials << " " << dimension <<std::endl;
     return 0;
