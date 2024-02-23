@@ -261,7 +261,8 @@ int main(int argc, char* argv[]) {
         std::cout << treeWeight << std::endl;
 
     }
-    std::cout << totalMSTWeight / numtrials << std::endl;
+    double average = totalMSTWeight / numtrials;
+    std::cout << average << std::endl;
     return 0;
 }
 
