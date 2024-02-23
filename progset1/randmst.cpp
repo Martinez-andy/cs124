@@ -257,7 +257,7 @@ int main(int argc, char* argv[]) {
             }
 
         }
-
+        
         double treeWeight = kruskals(graph.getEdgeList(), n);
         totalMSTWeight += treeWeight;
 
