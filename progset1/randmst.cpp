@@ -67,7 +67,9 @@ class Graph{
                 /*
                 adjacencyMatrix.push_back(std::vector<double>());
                 */
-                
+                std::random_device rd;
+                std::mt19937 gen(rd());
+                std::uniform_real_distribution<double> dist(0.0, 1.0);
 
                 // Iterate over all nodes and add edges (since graph is complete)
                 for (size_t i = 0; i < numToNode.size(); i++) {
@@ -75,10 +77,7 @@ class Graph{
                     if (i == nodeNumber) continue;
 
                     // Generate a random number from a uniform distribution:
-                    std::random_device rd;
-                    std::mt19937 gen(rd());
-
-                    std::uniform_real_distribution<double> dist(0.0, 1.0);
+                    
                     double random_number = dist(gen);
 
                     /*
@@ -229,6 +228,7 @@ int main(int argc, char* argv[]) {
 
     std::random_device rd;
     std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     for (size_t i = 0; i < numtrials; i++) {
         // Restart graph object
@@ -249,7 +249,6 @@ int main(int argc, char* argv[]) {
                 std::vector<double> coord;
                 for (size_t k = 0; k < dimension; k++) {
 
-                    std::uniform_real_distribution<double> dist(0.0, 1.0);
                     double random_number = dist(gen);
 
                     coord.push_back(random_number);
