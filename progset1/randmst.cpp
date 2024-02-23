@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <string>
 
-#include <stdio.h>
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size);
 
 // Finds the Euclidean distance between two coordinate points given (coords are given as vectors)
@@ -148,6 +147,7 @@ class UnionFind{
             for (size_t i = 0; i < size; i++) {
                 MakeSet(i);
             }
+            unions = 0;
         }
 
         // Find returns a nodeNum, rank tuple of root of set. Uses recursion for the path compression.
@@ -165,14 +165,17 @@ class UnionFind{
 
 
         // Union method as provided in the lecture slides. Unions two sets and returns nothing.
-        void Union(int num1, int num2) {
+        int Union(int num1, int num2) {
             Link(Find(num1), Find(num2));
-            return;
+            unions++;
+            return unions;
         }
 
     private:
         // Initializes the set
         std::vector<std::tuple<int, int>> Set;
+        
+        int unions;
 
         // Makeset (Added to private because as soon as we initialize a UnionFind obj we add all verts)
         void MakeSet(int nodeNum) {
@@ -258,11 +261,10 @@ int main(int argc, char* argv[]) {
 
         double treeWeight = kruskals(graph.getEdgeList(), n);
         totalMSTWeight += treeWeight;
-        std::cout << treeWeight << std::endl;
 
     }
     double average = totalMSTWeight / numtrials;
-    std::cout << average << std::endl;
+    std::cout << "Average total weight:" << average << std::endl;
     return 0;
 }
 
@@ -302,7 +304,8 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
             res.push_back(edge);
             tot += std::get<0>(ele);
 
-            set.Union(nodeNum1, nodeNum2);
+            int unions = set.Union(nodeNum1, nodeNum2);
+            if (unions == size - 1) break;
         }
     }
     return tot;
