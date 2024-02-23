@@ -224,6 +224,9 @@ int main(int argc, char* argv[]) {
     // Create variable to track total weight
     double totalMSTWeight = 0.0;
 
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
     for (size_t i = 0; i < numtrials; i++) {
         // Restart graph object
         Graph graph;
@@ -242,8 +245,6 @@ int main(int argc, char* argv[]) {
                 // Generate coords randomly and add dimensions
                 std::vector<double> coord;
                 for (size_t k = 0; k < dimension; k++) {
-                    std::random_device rd;
-                    std::mt19937 gen(rd());
 
                     std::uniform_real_distribution<double> dist(0.0, 1.0);
                     double random_number = dist(gen);
@@ -303,7 +304,5 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
             set.Union(nodeNum1, nodeNum2);
         }
     }
-    
-    
     return tot;
 }
