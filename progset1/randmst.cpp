@@ -50,18 +50,24 @@ class Graph{
         slot in the i-th element of the adjacency matrix
         represents the edgeweight between nodes i and j.
         */
-        std::vector<std::vector<double>> adjacencyMatrix;
+       /*
+       std::vector<std::vector<double>> adjacencyMatrix;
+       */
+        
 
     public:
-        Graph() : nodeNumber(0), numToNode(), adjacencyMatrix(), edgeList() {} 
+        // Removed adjacency matrix
+        Graph() : nodeNumber(0), numToNode(), edgeList() {} 
 
-        // HANDLE CASE 1 BROTHER
 
         // Adds nodes and maintains the complete graph invariant.
         void addNode(std::vector<double> coord, bool isCase1) {
             if (isCase1) {
-                numToNode.push_back(std::vector<double>((double) nodeNumber));
+                numToNode.push_back(coord);
+                /*
                 adjacencyMatrix.push_back(std::vector<double>());
+                */
+                
 
                 // Iterate over all nodes and add edges (since graph is complete)
                 for (size_t i = 0; i < numToNode.size(); i++) {
@@ -75,9 +81,11 @@ class Graph{
                     std::uniform_real_distribution<double> dist(0.0, 1.0);
                     double random_number = dist(gen);
 
-
+                    /*
                     // Add random number to adj matrix
                     adjacencyMatrix[nodeNumber].push_back(random_number);
+                    */
+                    
 
                     // Add to edgelist
                     edgeList.push_back(std::make_tuple(random_number, std::make_tuple(nodeNumber, i)));
@@ -87,7 +95,9 @@ class Graph{
                  // Assign coordinate to a node number
                 numToNode.push_back(coord);
                 // Initialize a new row for this new node
+                /*
                 adjacencyMatrix.push_back(std::vector<double>());
+                */
 
 
                 // Add edgeweights to adj matrix
@@ -98,8 +108,11 @@ class Graph{
                     // Calculate distance
                     double dist = distance(coord, numToNode[i]);
 
+                    /*
                     // Distance becomes edgeweight
                     adjacencyMatrix[nodeNumber].push_back(dist);
+                    */
+                    
 
                     // Adds entry into edge list. Format: (edgeweight, edge-relation)
                     // AKA identifies the edge based on node numbers.
@@ -112,10 +125,12 @@ class Graph{
         }
 
         // Returns the adjacencyMatrix, aka the graph.
+        /*
         std::vector<std::vector<double>> getMatrix() {
             return adjacencyMatrix;
         }
-
+        */
+        
         // Returns the edgelist (useful for Kruskal's alg)
         std::vector<std::tuple<double, std::tuple<int, int>>> getEdgeList() {
             return edgeList;
@@ -182,7 +197,6 @@ class UnionFind{
 
             // If the two are of equal size, increment rank.
             if (rank1 == rank2) {
-                int nodeNum2 = std::get<0>(num2);
                 Set[nodeNum2] = std::make_tuple(nodeNum2, rank2 + 1);
             }
             // Set nodeNum1 (root w smaller rank) to point to nodeNum2 (root w larger rank)
@@ -197,6 +211,7 @@ int main(int argc, char* argv[]) {
     // Use mt19937 for random number generation?
     if (argc != 5) {
         printf("4 inputs needed: 0 numpoints numtrials dimension");
+        return 1;
     }
 
     int n = std::stoi(argv[2]);
