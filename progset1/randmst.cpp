@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <string>
 
+#include <stdio.h>
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size);
 
 // Finds the Euclidean distance between two coordinate points given (coords are given as vectors)
@@ -220,11 +221,12 @@ int main(int argc, char* argv[]) {
 
     int dimension = std::stoi(argv[4]);
 
-    // Create graph object
-    Graph graph;
+    // Create variable to track total weight
     double totalMSTWeight = 0.0;
 
     for (size_t i = 0; i < numtrials; i++) {
+        // Restart graph object
+        Graph graph;
         if (dimension == 0) {
 
             // Add all the nodes (vecotors don't matter since 0-dimensional.)
@@ -288,12 +290,12 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
     // Create list of edges for the MST and var to hold total sum.
     std::vector<std::tuple<int, int>> res;
     double tot = 0;
-
-    for (std::tuple<double, std::tuple<int, int>> ele: edgelist) {
+    for (size_t i = 0; i < edgelist.size(); i++) {
+        std::tuple<double, std::tuple<int, int>> ele = edgelist[i];
         std::tuple<int, int> edge = std::get<1>(ele);
         int nodeNum1 = std::get<0>(edge);
         int nodeNum2 = std::get<1>(edge);
-        
+
         if (set.Find(nodeNum1) != set.Find(nodeNum2)) {
             res.push_back(edge);
             tot += std::get<0>(ele);
@@ -301,6 +303,7 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
             set.Union(nodeNum1, nodeNum2);
         }
     }
+    
     
     return tot;
 }
