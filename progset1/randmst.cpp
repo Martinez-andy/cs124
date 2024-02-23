@@ -207,41 +207,44 @@ int main(int argc, char* argv[]) {
 
     // Create graph object
     Graph graph;
+    double totalMSTWeight = 0.0;
 
-    if (dimension == 0) {
+    for (size_t i = 0; i < numtrials; i++) {
+        if (dimension == 0) {
 
-        // Add all the nodes (vecotors don't matter since 0-dimensional.)
-        // Number are randomly generated in the addNode method for 0-D graphs.
-        for (size_t i; i < n; i++) {
-            graph.addNode({0.0}, true);
-        }
-    } 
-    else {
-
-        // Construct graphs for 2-D, 3-D, and 4-D cases
-        for (size_t i = 0; i < n; i++) {
-            // Generate coords randomly and add dimensions
-            std::vector<double> coord;
-            for (size_t j = 0; j < dimension; j++) {
-                std::random_device rd;
-                std::mt19937 gen(rd());
-
-                std::uniform_real_distribution<double> dist(0.0, 1.0);
-                double random_number = dist(gen);
-
-                coord.push_back(random_number);
+            // Add all the nodes (vecotors don't matter since 0-dimensional.)
+            // Number are randomly generated in the addNode method for 0-D graphs.
+            for (size_t j = 0; j < n; j++) {
+                graph.addNode({0.0}, true);
             }
-            std::cout << coord.size() << std::endl;
-            graph.addNode(coord, false);
+        } 
+        else {
+
+            // Construct graphs for 2-D, 3-D, and 4-D cases
+            for (size_t j = 0; j < n; j++) {
+                // Generate coords randomly and add dimensions
+                std::vector<double> coord;
+                for (size_t k = 0; k < dimension; k++) {
+                    std::random_device rd;
+                    std::mt19937 gen(rd());
+
+                    std::uniform_real_distribution<double> dist(0.0, 1.0);
+                    double random_number = dist(gen);
+
+                    coord.push_back(random_number);
+                }
+                graph.addNode(coord, false);
+            }
+
         }
+
+        double treeWeight = kruskals(graph.getEdgeList(), n);
+        totalMSTWeight += treeWeight;
+        std::cout << treeWeight << std::endl;
 
     }
-
-    double totalWeight = kruskals(graph.getEdgeList(), n);
-
-    std::cout << totalWeight << std::endl;
-
-    return totalWeight;
+    std::cout << totalMSTWeight / numtrials << std::endl;
+    return 0;
 }
 
     /*
