@@ -231,11 +231,6 @@ int main(int argc, char* argv[]) {
     std::mt19937 gen(rd());
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
-    
-     // Start timer
-    auto start = std::chrono::high_resolution_clock::now();
-
-
 
     for (size_t i = 0; i < numtrials; i++) {
         // Restart graph object
@@ -264,18 +259,9 @@ int main(int argc, char* argv[]) {
             }
 
         }
-       
-
         double treeWeight = kruskals(graph.getEdgeList(), n);
         totalMSTWeight += treeWeight;
     }
-
-    // End timer
-    auto end = std::chrono::high_resolution_clock::now();
-
-    // Calculate and print time:
-    std::chrono::duration<double> duration = end - start;
-    std::cout << "Execution time: " << duration.count() << " seconds" << std::endl;
 
 
     double average = totalMSTWeight / numtrials;
@@ -286,7 +272,7 @@ int main(int argc, char* argv[]) {
     /*
     Constructing 3 graphs:
         1.) Graph with n vertices where edge weights are distributed uniformly [0, 1]
-        2.) Graph with n vertices where nodes are placed randomly into a unit squaure
+        2.) Graph with n vertices where nodes are placed randomly into a unit squaure 
         and edge weights are equal to the euclidean distance between nodes
         3.) Graph with n vertices where nodes are placed randomly into a unit cube 
         and edge weights are equal to the euclidean distance between nodes
@@ -298,6 +284,9 @@ int main(int argc, char* argv[]) {
 // Implementation of Kruskal's algorithm. Takes in the edgelist from the graph class as input as well as the size
 // of the graph (number of nodes) as input.
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size) {
+     // Start timer
+    auto start = std::chrono::high_resolution_clock::now();
+
     // Sort the edge lists by their edge weights
     std::sort(edgelist.begin(), edgelist.end(), 
               [](const auto& lhs, const auto& rhs) {
@@ -307,7 +296,10 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
     UnionFind set(size);
 
     // Create list of edges for the MST and var to hold total sum.
+    /*
     std::vector<std::tuple<int, int>> res;
+    */
+    
     double tot = 0;
     for (size_t i = 0; i < edgelist.size(); i++) {
         std::tuple<double, std::tuple<int, int>> ele = edgelist[i];
@@ -316,12 +308,21 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
         int nodeNum2 = std::get<1>(edge);
 
         if (set.Find(nodeNum1) != set.Find(nodeNum2)) {
+            /*
             res.push_back(edge);
+            */
+            
             tot += std::get<0>(ele);
 
             int unions = set.Union(nodeNum1, nodeNum2);
             if (unions == size - 1) break;
         }
     }
+        // End timer
+    auto end = std::chrono::high_resolution_clock::now();
+
+    // Calculate and print time:
+    std::chrono::duration<double> duration = end - start;
+    std::cout << duration.count() << std::endl;
     return tot;
 }
