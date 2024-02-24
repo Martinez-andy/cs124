@@ -284,8 +284,6 @@ int main(int argc, char* argv[]) {
 // Implementation of Kruskal's algorithm. Takes in the edgelist from the graph class as input as well as the size
 // of the graph (number of nodes) as input.
 double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, int size) {
-     // Start timer
-    auto start = std::chrono::high_resolution_clock::now();
 
     // Sort the edge lists by their edge weights
     std::sort(edgelist.begin(), edgelist.end(), 
@@ -318,11 +316,5 @@ double kruskals(std::vector<std::tuple<double, std::tuple<int, int>>> edgelist, 
             if (unions == size - 1) break;
         }
     }
-        // End timer
-    auto end = std::chrono::high_resolution_clock::now();
-
-    // Calculate and print time:
-    std::chrono::duration<double> duration = end - start;
-    std::cout << duration.count() << std::endl;
     return tot;
 }
