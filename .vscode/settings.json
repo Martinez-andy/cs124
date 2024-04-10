@@ -70,5 +70,6 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/Users/andymartinez/cs124/pset1/eigen"
 }
