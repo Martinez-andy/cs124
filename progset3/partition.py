@@ -156,10 +156,6 @@ def hillClimbing(A):
     return abs(s1 - s2)
 
 
-
-
-
-
 # Implementation of simulated Annealing alg
 def simulatedAnnealing(A):
     # Get a random starting point
@@ -236,8 +232,28 @@ def prepartHill(A):
 
 
 def prepartSim(A):
-    return None
-
+    A_prime, P = prepart(A)
+    
+    res = karmarkarKarp(A_prime)
+    
+    for iter in range(max_iter):
+        # Find neighbors
+        new_P = prepartNeighbor(P)
+        
+        # Find new A value
+        new_A, new_P = prepart(A, new_P)
+        
+        # Calculate new_res
+        new_res = karmarkarKarp(new_A)
+        
+        if new_res < res:
+            res = new_res
+            P = new_P
+        elif random.random() <= np.exp(- (new_res - res)) / (T(iter)):
+            res = new_res
+            P = new_P
+        
+    return res
 
 
 
