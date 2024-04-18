@@ -85,14 +85,16 @@ def repeatedRandom(A):
     # Initialize random solution
     s1, s2, _ = getRandSol(A)
     
-    residual = abs(s1 - s2)
-    
     # Iterate over max_iter
     for _ in range(1, max_iter):
         # For each set residual equal to minimum of both
         s1_prime, s2_prime, _ = getRandSol(A)
-        residual = min(residual, abs(s1_prime - s2_prime))
-    return residual
+        
+        # If solution is better, then update
+        if abs(s1 - s2) < abs(s1_prime - s2_prime):
+            s1, s2 = s1_prime, s2_prime
+
+    return abs(s1 - s2)
 
 
 # Implementatoin of hill climb alg
