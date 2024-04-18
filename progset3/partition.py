@@ -1,11 +1,17 @@
+import numpy as np
 import random
 import heapq
+import math
 import sys
 
 
 
 # Global var(s)
-max_iter = 25000
+max_iter = 40000
+
+
+def T(iter):
+    return pow(10, 10) * pow(0.8, math.floor(iter / 300))
 
 
 # Takes in sequence A and returns A' (used for pre-partitioned algs)
@@ -95,10 +101,10 @@ def hillClimbing(A):
     # Get a random starting point
     s1, s2, asgmt = getRandSol(A)
     
-    # Intialize tmps for each iteration
-    tmp1, tmp2 = s1, s2
-    
     for _ in range(max_iter):
+        # Initialize/update temps
+        tmp1, tmp2 = s1, s2
+        
         # Choose random index
         switch = random.randint(0, len(A) - 1)
         
@@ -115,15 +121,36 @@ def hillClimbing(A):
             asgmt[switch] = not asgmt[switch]
             s1, s2 = tmp1, tmp2
 
-        # Update temps
-        tmp1, tmp2 = s1, s2
-    
     return abs(s1 - s2)
 
 
 # Implementation of simulated Annealing alg
 def simulatedAnnealing(A):
-    return None
+        # Get a random starting point
+    s1, s2, asgmt = getRandSol(A)
+    
+    for iter in range(max_iter):
+        # Initialize/update temps
+        tmp1, tmp2 = s1, s2
+        
+        # Choose random index
+        switch = random.randint(0, len(A) - 1)
+        
+        # Calculate residual if ele at switch index changes sets 
+        if asgmt[switch]:
+            tmp1 -= A[switch]
+            tmp2 += A[switch]
+        else:
+            tmp2 -= A[switch]
+            tmp1 += A[switch]
+            
+        # If temp res < curr res, then update sets and s1/s2 to smaller one
+        if (abs(tmp1 - tmp2) < abs(s1 - s2) 
+        or random.random() <= np.exp(- ((abs(tmp1 - tmp2)) - (abs(s1 - s2))) / (T(iter)))):
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+
+    return abs(s1 - s2)
 
 
 # Code that handles inputs and calls algorithms
