@@ -24,17 +24,17 @@ def prepart(A):
 # KK algorithm
 def karmarkarKarp(A):
     # Negate entries to make the min-heap a max-heap
-    A = [-a for a in A]
+    A_prime = [-a for a in A]
     
     # Heapify list and initialize return val
-    A_heap = heapq.heapify(A)
+    heapq.heapify(A_prime)
 
     # Exit when only one element is left
-    while len(A_heap) == 1:
+    while len(A_prime) == 1:
         
         # Take largest 2 elements (can do blindly because of while condition)
-        top_1 = heapq.heappop(A_heap)
-        top_2 = heapq.heappop(A_heap)
+        top_1 = heapq.heappop(A_prime)
+        top_2 = heapq.heappop(A_prime)
         
         # Calculate residual
         res = abs(top_1 - top_2)
@@ -42,10 +42,10 @@ def karmarkarKarp(A):
         # Only add residual back if non-zero, else return 0
         if not res:
             return res
-        heapq.heappush(A_heap, -res)
+        heapq.heappush(A_prime, -res)
 
 
-    return A_heap[0]
+    return A_prime[0]
     
 
 
