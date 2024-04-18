@@ -18,7 +18,7 @@ def T(iter):
 def prepart(A):
     # Initialize A and P
     A_prime = [0 for _ in A]
-    P = [random.randint(0, len(A)) for _ in A]
+    P = [random.randint(0, len(A) - 1) for _ in A]
     
     
     # For each entry...
