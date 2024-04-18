@@ -65,6 +65,7 @@ def repeatedRandom(A):
     return residual
 
 
+# repeatRandom Helper function
 def getRandSol(A):
     # Keep track of sums of both sets
     fst_sum = 0
@@ -113,14 +114,16 @@ def main():
     # Save the alg tag
     alg = sys.argv[2]
     
+
     # If prepartion alg, then pre-partition (turn A into A') and adjust alg tag
-    if len(alg) > 2:
+    if len(alg) > 1:
         alg = alg[-1]
+        
         A = prepart(A)
     
     res = None
     
-    match sys.argv[2]:
+    match alg:
         case "0":
             # Karmarkar-Karp
             res = karmarkarKarp(A)
