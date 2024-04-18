@@ -124,19 +124,33 @@ def hillClimbing(A):
     return abs(s1 - s2)
 
 
+
+
+
+
+
+
+
+
+
+
+
 # Implementation of simulated Annealing alg
 def simulatedAnnealing(A):
-        # Get a random starting point
+    # Get a random starting point
     s1, s2, asgmt = getRandSol(A)
+    
+    # Initialize s''
+    s1p, s2p, asgmtp = s1, s2, asgmt
     
     for iter in range(max_iter):
         # Initialize/update temps
         tmp1, tmp2 = s1, s2
         
-        # Choose random index
+        # Choose random index to switch (random neighbor)
         switch = random.randint(0, len(A) - 1)
         
-        # Calculate residual if ele at switch index changes sets 
+        # Calculate residual of neighbor
         if asgmt[switch]:
             tmp1 -= A[switch]
             tmp2 += A[switch]
@@ -145,12 +159,19 @@ def simulatedAnnealing(A):
             tmp1 += A[switch]
             
         # If temp res < curr res, then update sets and s1/s2 to smaller one
-        if (abs(tmp1 - tmp2) < abs(s1 - s2) 
-        or random.random() <= np.exp(- ((abs(tmp1 - tmp2)) - (abs(s1 - s2))) / (T(iter)))):
+        if abs(tmp1 - tmp2) < abs(s1 - s2): 
             asgmt[switch] = not asgmt[switch]
             s1, s2 = tmp1, tmp2
+        elif random.random() <= np.exp(- ((abs(tmp1 - tmp2)) - (abs(s1 - s2))) / (T(iter))):
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+        
+        # s'' = s condition
+        if abs(s1 - s2) < abs(s1p - s2p):
+            asgmtp = asgmt
+            s1p, s2p = s1, s2
 
-    return abs(s1 - s2)
+    return abs(s1p - s2p)
 
 
 # Code that handles inputs and calls algorithms
