@@ -7,28 +7,25 @@ import sys
 
 
 # Global var(s)
-max_iter = 40000
+max_iter = 50000
 
-
+# The temperature function used in simulated annealing
 def T(iter):
     return pow(10, 10) * pow(0.8, math.floor(iter / 300))
 
 
 # Takes in sequence A and returns A' (used for pre-partitioned algs)
 def prepart(A):
-    # Initialize A to be list of zeros
+    # Initialize A and P
     A_prime = [0 for _ in A]
+    P = [random.randint(0, len(A)) for _ in A]
     
-    # Store length of A for pretty code
-    n = len(A)
     
     # For each entry...
-    for ele in A:
-        # Select random int from 1 to n, the same as creating some P but more memory efficient
-        p_i = random.randint(1, n)
+    for i, ele in enumerate(A):
         
         # Update A_prime accoring to notes
-        A_prime[p_i - 1] += ele
+        A_prime[P[i]] += ele
     return A_prime
 
 
@@ -69,14 +66,16 @@ def getRandSol(A):
     # Iterate over each element and add them to either set randomly
     for ele in A:
         # Assign elements into a set
-        is_set_one = bool(random.randint(0, 1))
+        in_set_one = bool(random.randint(0, 1))
         
-        if is_set_one:
+        # Add ele to respective sum depending on set
+        if in_set_one:
             fst_sum += ele
         else:
             snd_sum += ele
-    
-        asgmt.append(is_set_one)
+
+        # Indicate if in set one or not
+        asgmt.append(in_set_one)
             
     return fst_sum, snd_sum, asgmt 
 
@@ -89,7 +88,7 @@ def repeatedRandom(A):
     residual = abs(s1 - s2)
     
     # Iterate over max_iter
-    for _ in range(max_iter):
+    for _ in range(1, max_iter):
         # For each set residual equal to minimum of both
         s1_prime, s2_prime, _ = getRandSol(A)
         residual = min(residual, abs(s1_prime - s2_prime))
@@ -101,7 +100,7 @@ def hillClimbing(A):
     # Get a random starting point
     s1, s2, asgmt = getRandSol(A)
     
-    for _ in range(max_iter):
+    for _ in range(1, max_iter):
         # Initialize/update temps
         tmp1, tmp2 = s1, s2
         
@@ -109,10 +108,10 @@ def hillClimbing(A):
         switch = random.randint(0, len(A) - 1)
         
         # Calculate residual if ele at switch index changes sets 
-        if asgmt[switch]:
+        if asgmt[switch]: # If in set 1 then...
             tmp1 -= A[switch]
             tmp2 += A[switch]
-        else:
+        else: # Else, it's in set 2 so...
             tmp2 -= A[switch]
             tmp1 += A[switch]
             
@@ -143,7 +142,7 @@ def simulatedAnnealing(A):
     # Initialize s''
     s1p, s2p, asgmtp = s1, s2, asgmt
     
-    for iter in range(max_iter):
+    for iter in range(1, max_iter):
         # Initialize/update temps
         tmp1, tmp2 = s1, s2
         
