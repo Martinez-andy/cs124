@@ -14,10 +14,13 @@ def T(iter):
 
 
 # Takes in sequence A and returns A' (used for pre-partitioned algs)
-def prepart(A):
+def prepart(A, P=None):
     # Initialize A and P
     A_prime = [0 for _ in A]
-    P = [random.randint(0, len(A) - 1) for _ in A]
+    
+    # If a P is not given, then create a random one
+    if not P:
+        P = [random.randint(0, len(A) - 1) for _ in A]
     
     # For each entry...
     for i, ele in enumerate(A):
@@ -25,10 +28,23 @@ def prepart(A):
         # Update A_prime accoring to notes
         A_prime[P[i]] += ele
         
-    return A_prime
+    return A_prime, P
 
 
-
+# Takes in a set and a P and returns a neighbor
+def prepartNeighbor(P):
+    # Find i and j until P_i != j
+    while True:
+        i, j = random.randint(0, len(P) - 1), random.randint(0, len(P) - 1)
+        
+        if P[i] != j:
+            break
+    # Set P_i = j
+    P[i] = j
+    
+    # Return modified P
+    return P
+    
 # KK algorithm
 def karmarkarKarp(A):
     # Negate entries to make the min-heap a max-heap
@@ -132,7 +148,6 @@ def hillClimbing(A):
         if random.random() <= 0.5:
             tmp1, tmp2, tmp_asgmt = swap(tmp1, tmp2, i2, A, tmp_asgmt)
             
-            
         # If temp res < curr res, then update sets and s1/s2 to smaller one
         if abs(tmp1 - tmp2) < abs(s1 - s2):
             asgmt = tmp_asgmt
@@ -145,59 +160,48 @@ def hillClimbing(A):
 
 
 
-
-
-
-
-
-
-
 # Implementation of simulated Annealing alg
 def simulatedAnnealing(A):
     # Get a random starting point
     s1, s2, asgmt = getRandSol(A)
     
-    # Initialize s''
-    s1p, s2p, asgmtp = s1, s2, asgmt
+    i1 = i2 = 0
     
     for iter in range(1, max_iter):
         # Initialize/update temps
         tmp1, tmp2 = s1, s2
         
-        # Choose random index to switch (random neighbor)
-        switch = random.randint(0, len(A) - 1)
+        # Do while loop until indices aren't equal
+        while True:
+            i1, i2 = random.randint(0, len(A) - 1), random.randint(0, len(A) - 1)
+            if i1 != i2:
+                break
         
-        # Calculate residual of neighbor
-        if asgmt[switch]:
-            tmp1 -= A[switch]
-            tmp2 += A[switch]
-        else:
-            tmp2 -= A[switch]
-            tmp1 += A[switch]
+        # Swap i1's sign
+        tmp1, tmp1, tmp_asgmt = swap(tmp1, tmp2, i1, A, asgmt)
+        
+        # Swap i2 w prob 50%
+        if random.random() <= 0.5:
+            tmp1, tmp2, tmp_asgmt = swap(tmp1, tmp2, i2, A, tmp_asgmt)
             
         # If temp res < curr res, then update sets and s1/s2 to smaller one
-        if abs(tmp1 - tmp2) < abs(s1 - s2): 
-            asgmt[switch] = not asgmt[switch]
+        if abs(tmp1 - tmp2) < abs(s1 - s2):
+            asgmt = tmp_asgmt
             s1, s2 = tmp1, tmp2
-        elif random.random() <= np.exp(- ((abs(tmp1 - tmp2)) - (abs(s1 - s2))) / (T(iter))):
-            asgmt[switch] = not asgmt[switch]
+        elif random.random() <= np.exp(- (abs(tmp1 - tmp2) - abs(s1 - s2)) / (T(iter))):
+            asgmt = tmp_asgmt
             s1, s2 = tmp1, tmp2
-        
-        # s'' = s condition
-        if abs(s1 - s2) < abs(s1p - s2p):
-            asgmtp = asgmt
-            s1p, s2p = s1, s2
 
-    return abs(s1p - s2p)
+    return abs(s1 - s2)
 
 
 def prepartRandom(A):
-    A_prime = prepart(A)
+    A_prime, _ = prepart(A)
     residue = karmarkarKarp(A_prime)
 
     
     for _ in range(1, max_iter):
-        A_temp = prepart(A)
+        A_temp, _ = prepart(A)
         
         res_temp = karmarkarKarp(A_temp)
         
@@ -208,7 +212,28 @@ def prepartRandom(A):
 
 
 def prepartHill(A):
-    return None
+    A_prime, P = prepart(A)
+    
+    res = karmarkarKarp(A_prime)
+    
+    for _ in range(max_iter):
+        # Find neighbors
+        new_P = prepartNeighbor(P)
+        
+        # Find new A value
+        new_A, new_P = prepart(A, new_P)
+        
+        # Calculate new_res
+        new_res = karmarkarKarp(new_A)
+        
+        if new_res < res:
+            res = new_res
+            P = new_P
+        
+    return res
+
+
+
 
 def prepartSim(A):
     return None
