@@ -7,7 +7,7 @@ import sys
 
 
 # Global var(s)
-max_iter = 60000
+max_iter = 65000
 
 # The temperature function used in simulated annealing
 def T(iter):
@@ -20,12 +20,12 @@ def prepart(A):
     A_prime = [0 for _ in A]
     P = [random.randint(0, len(A) - 1) for _ in A]
     
-    
     # For each entry...
     for i, ele in enumerate(A):
         
         # Update A_prime accoring to notes
-        A_prime[P[i]] += ele
+        A_prime[P[i] - 1] += ele
+        
     return A_prime
 
 
