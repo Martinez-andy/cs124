@@ -5,9 +5,8 @@ import math
 import sys
 
 
-
 # Global var(s)
-max_iter = 65000
+max_iter = 40000
 
 # The temperature function used in simulated annealing
 def T(iter):
@@ -52,7 +51,6 @@ def karmarkarKarp(A):
             return res
         heapq.heappush(A_prime, res)
 
-
     return abs(A_prime[0])
    
    
@@ -91,7 +89,7 @@ def repeatedRandom(A):
         s1_prime, s2_prime, _ = getRandSol(A)
         
         # If solution is better, then update
-        if abs(s1 - s2) < abs(s1_prime - s2_prime):
+        if abs(s1_prime - s2_prime) < abs(s1 - s2):
             s1, s2 = s1_prime, s2_prime
 
     return abs(s1 - s2)
