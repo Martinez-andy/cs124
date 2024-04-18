@@ -63,7 +63,7 @@ def repeatedRandom(A):
     # Iterate over max_iter
     for _ in range(max_iter):
         # For each set residual equal to minimum of both
-        s1_prime, s2_prime = getRandSol(A)
+        s1_prime, s2_prime, _ = getRandSol(A)
         residual = min(residual, abs(s1_prime - s2_prime))
     return residual
 
