@@ -51,23 +51,8 @@ def karmarkarKarp(A):
 
 
     return abs(A_prime[0])
-    
-
-# Implementation of repeated random alg
-def repeatedRandom(A):
-    # Initialize random solution
-    s1, s2, _ = getRandSol(A)
-    
-    residual = abs(s1 - s2)
-    
-    # Iterate over max_iter
-    for _ in range(max_iter):
-        # For each set residual equal to minimum of both
-        s1_prime, s2_prime, _ = getRandSol(A)
-        residual = min(residual, abs(s1_prime - s2_prime))
-    return residual
-
-
+   
+   
 # repeatRandom/hill Climb Helper function
 def getRandSol(A):
     # Keep track of sums and of which set each is in
@@ -87,8 +72,22 @@ def getRandSol(A):
     
         asgmt.append(is_set_one)
             
-    return fst_sum, snd_sum, asgmt
+    return fst_sum, snd_sum, asgmt 
 
+
+# Implementation of repeated random alg
+def repeatedRandom(A):
+    # Initialize random solution
+    s1, s2, _ = getRandSol(A)
+    
+    residual = abs(s1 - s2)
+    
+    # Iterate over max_iter
+    for _ in range(max_iter):
+        # For each set residual equal to minimum of both
+        s1_prime, s2_prime, _ = getRandSol(A)
+        residual = min(residual, abs(s1_prime - s2_prime))
+    return residual
 
 
 # Implementatoin of hill climb alg
@@ -101,7 +100,7 @@ def hillClimbing(A):
     
     for _ in range(max_iter):
         # Choose random index
-        switch = random.randint(1, len(A))
+        switch = random.randint(0, len(A) - 1)
         
         # Calculate residual if ele at switch index changes sets 
         if asgmt[switch]:
