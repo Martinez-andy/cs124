@@ -17,12 +17,12 @@ def prepart(A):
     n = len(A)
     
     # For each entry...
-    for i in range(n):
+    for ele in A:
         # Select random int from 1 to n, the same as creating some P but more memory efficient
         p_i = random.randint(1, n)
         
         # Update A_prime accoring to notes
-        A_prime[p_i - 1] += A[i]
+        A_prime[p_i - 1] += ele
     return A_prime
 
 
@@ -56,35 +56,70 @@ def karmarkarKarp(A):
 # Implementation of repeated random alg
 def repeatedRandom(A):
     # Initialize random solution
-    residual = getRandSol(A)
+    s1, s2, _ = getRandSol(A)
+    
+    residual = abs(s1 - s2)
     
     # Iterate over max_iter
     for _ in range(max_iter):
         # For each set residual equal to minimum of both
-        residual = min(residual, getRandSol(A))
+        s1_prime, s2_prime = getRandSol(A)
+        residual = min(residual, abs(s1_prime - s2_prime))
     return residual
 
 
-# repeatRandom Helper function
+# repeatRandom/hill Climb Helper function
 def getRandSol(A):
-    # Keep track of sums of both sets
+    # Keep track of sums and of which set each is in
     fst_sum = 0
     snd_sum = 0
+    asgmt = []
 
     # Iterate over each element and add them to either set randomly
     for ele in A:
-        if bool(random.randint(0, 1)):
+        # Assign elements into a set
+        is_set_one = bool(random.randint(0, 1))
+        
+        if is_set_one:
             fst_sum += ele
         else:
             snd_sum += ele
     
-    return abs(fst_sum - snd_sum)
+        asgmt.append(is_set_one)
+            
+    return fst_sum, snd_sum, asgmt
 
 
 
 # Implementatoin of hill climb alg
 def hillClimbing(A):
-    return None
+    # Get a random starting point
+    s1, s2, asgmt = getRandSol(A)
+    
+    # Intialize tmps for each iteration
+    tmp1, tmp2 = s1, s2
+    
+    for _ in range(max_iter):
+        # Choose random index
+        switch = random.randint(1, len(A))
+        
+        # Calculate residual if ele at switch index changes sets 
+        if asgmt[switch]:
+            tmp1 -= A[switch]
+            tmp2 += A[switch]
+        else:
+            tmp2 -= A[switch]
+            tmp1 += A[switch]
+            
+        # If temp res < curr res, then update sets and s1/s2 to smaller one
+        if abs(tmp1 - tmp2) < abs(s1 - s2):
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+
+        # Update temps
+        tmp1, tmp2 = s1, s2
+    
+    return abs(s1 - s2)
 
 
 # Implementation of simulated Annealing alg
