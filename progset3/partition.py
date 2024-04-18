@@ -3,6 +3,11 @@ import heapq
 import sys
 
 
+
+# Global var(s)
+max_iter = 25000
+
+
 # Takes in sequence A and returns A' (used for pre-partitioned algs)
 def prepart(A):
     # Initialize A to be list of zeros
@@ -48,10 +53,32 @@ def karmarkarKarp(A):
     return abs(A_prime[0])
     
 
-
 # Implementation of repeated random alg
 def repeatedRandom(A):
-    return None
+    # Initialize random solution
+    residual = getRandSol(A)
+    
+    # Iterate over max_iter
+    for _ in range(max_iter):
+        # For each set residual equal to minimum of both
+        residual = min(residual, getRandSol(A))
+    return residual
+
+
+def getRandSol(A):
+    # Keep track of sums of both sets
+    fst_sum = 0
+    snd_sum = 0
+
+    # Iterate over each element and add them to either set randomly
+    for ele in A:
+        if bool(random.randint(0, 1)):
+            fst_sum += ele
+        else:
+            snd_sum += ele
+    
+    return abs(fst_sum - snd_sum)
+
 
 
 # Implementatoin of hill climb alg
