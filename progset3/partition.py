@@ -18,7 +18,7 @@ def prepart(A):
         
         # Update A_prime accoring to notes
         A_prime[p_i - 1] += A[i]
-    return A
+    return A_prime
 
 
 # KK algorithm
@@ -30,22 +30,22 @@ def karmarkarKarp(A):
     heapq.heapify(A_prime)
 
     # Exit when only one element is left
-    while len(A_prime) == 1:
+    while len(A_prime) > 1:
         
         # Take largest 2 elements (can do blindly because of while condition)
         top_1 = heapq.heappop(A_prime)
         top_2 = heapq.heappop(A_prime)
         
         # Calculate residual
-        res = abs(top_1 - top_2)
+        res = top_1 - top_2
         
         # Only add residual back if non-zero, else return 0
         if not res:
             return res
-        heapq.heappush(A_prime, -res)
+        heapq.heappush(A_prime, res)
 
 
-    return A_prime[0]
+    return abs(A_prime[0])
     
 
 
@@ -90,6 +90,8 @@ def main():
     if len(alg) > 2:
         alg = alg[-1]
         A = prepart(A)
+    
+    res = None
     
     match sys.argv[2]:
         case "0":
