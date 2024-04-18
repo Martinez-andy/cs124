@@ -98,7 +98,32 @@ def repeatedRandom(A):
 
 # Implementatoin of hill climb alg
 def hillClimbing(A):
-    S = getRandSol(A)
+    # Get a random starting point
+    s1, s2, asgmt = getRandSol(A)
+    
+    
+    for _ in range(1, max_iter):
+        # Initialize/update temps
+        tmp1, tmp2 = s1, s2
+        
+
+        # Choose random index
+        switch = random.randint(0, len(A) - 1)
+        
+        # Calculate residual if ele at switch index changes sets 
+        if asgmt[switch]: # If in set 1 then...
+            tmp1 -= A[switch]
+            tmp2 += A[switch]
+        else: # Else, it's in set 2 so...
+            tmp2 -= A[switch]
+            tmp1 += A[switch]
+            
+        # If temp res < curr res, then update sets and s1/s2 to smaller one
+        if abs(tmp1 - tmp2) < abs(s1 - s2):
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+
+    return abs(s1 - s2)
 
 
 

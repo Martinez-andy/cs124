@@ -96,29 +96,46 @@ def repeatedRandom(A):
     return abs(s1 - s2)
 
 
+def swap(s1, s2, i, A, asgmt):
+    if asgmt[i]:
+        s1 += A[i]
+        s2 -= A[i]
+    else:
+        s2 += A[i]
+        s1 -= A[i]
+        
+    asgmt[i] = not asgmt[i]
+    
+    return s1, s2, asgmt
+
 # Implementatoin of hill climb alg
 def hillClimbing(A):
     # Get a random starting point
     s1, s2, asgmt = getRandSol(A)
     
+    i1 = i2 = 0
+    
     for _ in range(1, max_iter):
         # Initialize/update temps
         tmp1, tmp2 = s1, s2
         
-        # Choose random index
-        switch = random.randint(0, len(A) - 1)
+        # Do while loop until indices aren't equal
+        while True:
+            i1, i2 = random.randint(0, len(A) - 1), random.randint(0, len(A) - 1)
+            if i1 != i2:
+                break
         
-        # Calculate residual if ele at switch index changes sets 
-        if asgmt[switch]: # If in set 1 then...
-            tmp1 -= A[switch]
-            tmp2 += A[switch]
-        else: # Else, it's in set 2 so...
-            tmp2 -= A[switch]
-            tmp1 += A[switch]
+        # Swap i1's sign
+        tmp1, tmp1, tmp_asgmt = swap(tmp1, tmp2, i1, A, asgmt)
+        
+        # Swap i2 w prob 50%
+        if random.random() <= 0.5:
+            tmp1, tmp2, tmp_asgmt = swap(tmp1, tmp2, i2, A, tmp_asgmt)
+            
             
         # If temp res < curr res, then update sets and s1/s2 to smaller one
         if abs(tmp1 - tmp2) < abs(s1 - s2):
-            asgmt[switch] = not asgmt[switch]
+            asgmt = tmp_asgmt
             s1, s2 = tmp1, tmp2
 
     return abs(s1 - s2)
