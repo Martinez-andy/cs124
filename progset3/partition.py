@@ -11,39 +11,6 @@ max_iter = 40000
 # The temperature function used in simulated annealing
 def T(iter):
     return pow(10, 10) * pow(0.8, math.floor(iter / 300))
-
-
-# Takes in sequence A and returns A' (used for pre-partitioned algs)
-def prepart(A, P=None):
-    # Initialize A and P
-    A_prime = [0 for _ in A]
-    
-    # If a P is not given, then create a random one
-    if not P:
-        P = [random.randint(0, len(A) - 1) for _ in A]
-    
-    # For each entry...
-    for i, ele in enumerate(A):
-        
-        # Update A_prime accoring to notes
-        A_prime[P[i]] += ele
-        
-    return A_prime, P
-
-
-# Takes in a set and a P and returns a neighbor
-def prepartNeighbor(P):
-    # Find i and j until P_i != j
-    while True:
-        i, j = random.randint(0, len(P) - 1), random.randint(0, len(P) - 1)
-        
-        if P[i] != j:
-            break
-    # Set P_i = j
-    P[i] = j
-    
-    # Return modified P
-    return P
     
 # KK algorithm
 def karmarkarKarp(A):
@@ -191,6 +158,50 @@ def simulatedAnnealing(A):
     return abs(s1 - s2)
 
 
+
+
+# ALGORITHMS FOR PRE-PART PORTION 
+
+
+# PRE-PART HELP FUNCTIONS
+
+# Takes in sequence A and returns A' (used for pre-partitioned algs)
+def prepart(A, P=None):
+    # Initialize A and P
+    A_prime = [0 for _ in A]
+    
+    # If a P is not given, then create a random one
+    if not P:
+        P = [random.randint(0, len(A) - 1) for _ in A]
+    
+    # For each entry...
+    for i, ele in enumerate(A):
+        
+        # Update A_prime accoring to notes
+        A_prime[P[i]] += ele
+        
+    return A_prime, P
+
+
+# Takes in a set and a P and returns a neighbor
+def prepartNeighbor(P):
+    # Find i and j until P_i != j
+    while True:
+        i, j = random.randint(0, len(P) - 1), random.randint(0, len(P) - 1)
+        
+        if P[i] != j:
+            break
+    # Set P_i = j
+    P[i] = j
+    
+    # Return modified P
+    return P
+
+
+
+
+# PRE-PART ACTUAL ALGORITHMS
+
 def prepartRandom(A):
     A_prime, _ = prepart(A)
     residue = karmarkarKarp(A_prime)
@@ -205,7 +216,6 @@ def prepartRandom(A):
     
     return residue
             
-
 
 def prepartHill(A):
     A_prime, P = prepart(A)
@@ -227,8 +237,6 @@ def prepartHill(A):
             P = new_P
         
     return res
-
-
 
 
 def prepartSim(A):
@@ -254,7 +262,6 @@ def prepartSim(A):
             P = new_P
         
     return res
-
 
 
 # Code that handles inputs and calls algorithms
