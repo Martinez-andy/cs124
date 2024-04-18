@@ -23,9 +23,10 @@ def prepart(A):
     for i, ele in enumerate(A):
         
         # Update A_prime accoring to notes
-        A_prime[P[i] - 1] += ele
+        A_prime[P[i]] += ele
         
     return A_prime
+
 
 
 # KK algorithm
@@ -173,6 +174,31 @@ def simulatedAnnealing(A):
     return abs(s1p - s2p)
 
 
+def prepartRandom(A):
+    A_prime = prepart(A)
+    residue = karmarkarKarp(A_prime)
+
+    
+    for _ in range(1, max_iter):
+        A_temp = prepart(A)
+        
+        res_temp = karmarkarKarp(A_temp)
+        
+        residue = min(residue, res_temp)
+    
+    return residue
+            
+
+
+def prepartHill(A):
+    return None
+
+def prepartSim(A):
+    return None
+
+
+
+
 # Code that handles inputs and calls algorithms
 def main():
     if len(sys.argv) != 4:
@@ -195,13 +221,6 @@ def main():
     # Save the alg tag
     alg = sys.argv[2]
     
-
-    # If prepartion alg, then pre-partition (turn A into A') and adjust alg tag
-    if len(alg) > 1:
-        alg = alg[-1]
-        
-        A = prepart(A)
-    
     res = None
     
     match alg:
@@ -217,6 +236,13 @@ def main():
         case "3":
             # Simulated Annealing
             res = simulatedAnnealing(A)
+        case "11":
+            res = prepartRandom(A)
+        case "12":
+            res = prepartHill(A)
+        case "13":
+            res = prepartSim(A)
+            
             
     # Print out the result for bbg auto grader
     print(res)

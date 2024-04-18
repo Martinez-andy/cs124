@@ -6,7 +6,7 @@ import sys
 
 
 # Global var(s)
-max_iter = 70000
+max_iter = 40000
 
 # The temperature function used in simulated annealing
 def T(iter):
@@ -23,9 +23,10 @@ def prepart(A):
     for i, ele in enumerate(A):
         
         # Update A_prime accoring to notes
-        A_prime[P[i] - 1] += ele
+        A_prime[P[i]] += ele
         
-    return A_prime, P
+    return A_prime
+
 
 
 # KK algorithm
@@ -54,20 +55,56 @@ def karmarkarKarp(A):
     return abs(A_prime[0])
    
    
-
 # repeatRandom/hill Climb Helper function
 def getRandSol(A):
-    return None
+    # Keep track of sums and of which set each is in
+    fst_sum = 0
+    snd_sum = 0
+    asgmt = []
+
+    # Iterate over each element and add them to either set randomly
+    for ele in A:
+        # Assign elements into a set
+        in_set_one = bool(random.randint(0, 1))
         
-    
+        # Add ele to respective sum depending on set
+        if in_set_one:
+            fst_sum += ele
+        else:
+            snd_sum += ele
+
+        # Indicate if in set one or not
+        asgmt.append(in_set_one)
+            
+    return fst_sum, snd_sum, asgmt 
+
+
 # Implementation of repeated random alg
 def repeatedRandom(A):
-    return None
+    # Initialize random solution
+    s1, s2, _ = getRandSol(A)
+    
+    # Iterate over max_iter
+    for _ in range(1, max_iter):
+        # For each set residual equal to minimum of both
+        s1_prime, s2_prime, _ = getRandSol(A)
+        
+        # If solution is better, then update
+        if abs(s1_prime - s2_prime) < abs(s1 - s2):
+            s1, s2 = s1_prime, s2_prime
+
+    return abs(s1 - s2)
 
 
 # Implementatoin of hill climb alg
 def hillClimbing(A):
-    return None
+    S = getRandSol(A)
+
+
+
+
+
+
 
 
 
@@ -77,7 +114,67 @@ def hillClimbing(A):
 
 # Implementation of simulated Annealing alg
 def simulatedAnnealing(A):
+    # Get a random starting point
+    s1, s2, asgmt = getRandSol(A)
+    
+    # Initialize s''
+    s1p, s2p, asgmtp = s1, s2, asgmt
+    
+    for iter in range(1, max_iter):
+        # Initialize/update temps
+        tmp1, tmp2 = s1, s2
+        
+        # Choose random index to switch (random neighbor)
+        switch = random.randint(0, len(A) - 1)
+        
+        # Calculate residual of neighbor
+        if asgmt[switch]:
+            tmp1 -= A[switch]
+            tmp2 += A[switch]
+        else:
+            tmp2 -= A[switch]
+            tmp1 += A[switch]
+            
+        # If temp res < curr res, then update sets and s1/s2 to smaller one
+        if abs(tmp1 - tmp2) < abs(s1 - s2): 
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+        elif random.random() <= np.exp(- ((abs(tmp1 - tmp2)) - (abs(s1 - s2))) / (T(iter))):
+            asgmt[switch] = not asgmt[switch]
+            s1, s2 = tmp1, tmp2
+        
+        # s'' = s condition
+        if abs(s1 - s2) < abs(s1p - s2p):
+            asgmtp = asgmt
+            s1p, s2p = s1, s2
+
+    return abs(s1p - s2p)
+
+
+def prepartRandom(A):
+    A_prime = prepart(A)
+    residue = karmarkarKarp(A_prime)
+
+    
+    for _ in range(1, max_iter):
+        A_temp = prepart(A)
+        
+        res_temp = karmarkarKarp(A_temp)
+        
+        residue = min(residue, res_temp)
+    
+    return residue
+            
+
+
+def prepartHill(A):
     return None
+
+def prepartSim(A):
+    return None
+
+
+
 
 # Code that handles inputs and calls algorithms
 def main():
@@ -101,13 +198,6 @@ def main():
     # Save the alg tag
     alg = sys.argv[2]
     
-
-    # If prepartion alg, then pre-partition (turn A into A') and adjust alg tag
-    if len(alg) > 1:
-        alg = alg[-1]
-        
-        A, _ = prepart(A)
-    
     res = None
     
     match alg:
@@ -123,6 +213,13 @@ def main():
         case "3":
             # Simulated Annealing
             res = simulatedAnnealing(A)
+        case "11":
+            res = prepartRandom(A)
+        case "12":
+            res = prepartHill(A)
+        case "13":
+            res = prepartSim(A)
+            
             
     # Print out the result for bbg auto grader
     print(res)
