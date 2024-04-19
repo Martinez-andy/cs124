@@ -4,7 +4,6 @@ import heapq
 import math
 import sys
 
-
 # Global var(s)
 max_iter = 40000
 
