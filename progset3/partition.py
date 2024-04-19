@@ -5,7 +5,7 @@ import math
 import sys
 
 # Global var(s)
-max_iter = 30000
+max_iter = 35000
 
 # The temperature function used in simulated annealing
 def T(iter):
